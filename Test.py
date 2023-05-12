@@ -15,13 +15,16 @@ warnings.filterwarnings('ignore')
 import torch
 from sklearn.model_selection import train_test_split
 
-from utils import NS_datasets, NS_load, count_params
+from utils import NS_load, count_params
 from Dataset import AE_dataset, Dynamics_dataset
 from ModelClass import ModelClass
 
 
 Device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Device is', Device, '\n')
+
+data_names = {1: 'NS_V1e-3', 2: 'NS_V1e-4', 3: 'NS_V1e-5'}
+Ts = {1:50, 2:30, 3:20}
 
 NS_models = sorted([name for name in os.listdir('Results') if name.startswith('NS')])
 for i, model_name in enumerate(NS_models):
@@ -30,7 +33,6 @@ for i, model_name in enumerate(NS_models):
     Model.load_state_dict()
 
     dataset_idx = int(model_name[2])
-    Ts = {1:50, 2:30, 3:20}
     T = Ts[dataset_idx]
 
     a = model_name.find('dt')
@@ -62,7 +64,7 @@ for i, model_name in enumerate(NS_models):
         TRUEs = np.load(model.result_dir+'/TRUEs.npy')
         PREDs = np.load(model.result_dir+'/PREDs.npy')
     except:
-        data_array = NS_load(NS_datasets[dataset_idx])[:N, :T]
+        data_array = NS_load(data_names[dataset_idx], N, T)
         data_array /= max(data_array.max(), -data_array.min())
 
         model.set_AE_dataset(AE_dataset(data_array, train_idx),
