@@ -11,11 +11,9 @@ import argparse
 
 
 parser = argparse.ArgumentParser()
-# Specifications about the dataset:
+# Choosing the dataset:
 parser.add_argument('-data', '--dataset_idx', type=int, default=3,
-                    choices = [0, 1, 2, 3, 4])
-parser.add_argument('-N', '--N', type=int, default=1200,
-                    choices=[1200, 4800, 9600])
+                    choices = [1, 2, 3])
 
 # Specifications about the convolutional autoencoder
 parser.add_argument('-down', '--down', type=int, default=4,
@@ -24,11 +22,9 @@ parser.add_argument('-embed_dim', '--embed_dim', type=int, default=128,
                     choices=[32, 64, 128, 256, 512])
 
 # Specifications about the transformer
-parser.add_argument('-dt', '--dt', type=int, default=1,
-                    choices=[1, 2, 4, 8])
+parser.add_argument('-dt', '--dt', type=int, default=1)
 parser.add_argument('-num_layers', '--num_layers', type=int, default=6)
-parser.add_argument('-num_heads', '--num_heads', type=int, default=8,
-                    choices=[1, 2, 4, 8])
+parser.add_argument('-num_heads', '--num_heads', type=int, default=8)
 
 # Specifications about training
 parser.add_argument('-batch', '--batch_size', type=int, default=64,
@@ -43,7 +39,7 @@ print('Device is', Device, '\n')
 
 
 dataset_idx = args.dataset_idx
-N = args.N
+N = 1200
 
 down = args.down
 embed_dim = args.embed_dim
@@ -59,9 +55,7 @@ data_names = {1: 'NS_V1e-3', 2: 'NS_V1e-4', 3: 'NS_V1e-5'}
 Ts = {1: 50, 2:30, 3:20}
 T = Ts[dataset_idx]
 
-if N==4800: n=5000
-elif N==9600: n=10000
-data_array = NS_load(data_names[dataset_idx], n, T)[:N]
+data_array = NS_load(data_names[dataset_idx], N, T)
 
 data_array /= max(data_array.max(), -data_array.min())
 
@@ -102,10 +96,10 @@ Model.train_AE(epochs=n_epochs_ae, batch_size=batch_size)
 # set and train dynamic model
 transformer = Transformer2D(shape=(embed_size, embed_size),
                             n_layers=num_layers,
-                             MHA_kwargs=dict(embed_dim=embed_dim,
-                                             num_heads=num_heads,
-                                             hidden_dim=hidden_dim)
-                             )
+                            MHA_kwargs=dict(embed_dim=embed_dim,
+                                            num_heads=num_heads,
+                                            hidden_dim=hidden_dim)
+                           )
 Model.set_model(transformer)
 print(f'Training transformer for {n_epochs_transformer} epochs')
 Model.train(epochs=n_epochs_transformer, batch_size=batch_size)

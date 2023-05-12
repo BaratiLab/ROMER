@@ -7,8 +7,6 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib import animation
 import torch
-import scipy.io
-import h5py
 plt.rcParams['figure.figsize'] = [8, 6]
 plt.rcParams.update({'font.size': 18})
 
@@ -24,68 +22,11 @@ def what_is(x):
     except:
         pass
 
-# %% DL-ROM datasets
-datasets = ['Cylinder', 'Plate', 'Square_Cylinder']  # 'Airfoil'
-
-prep = {
-    'Airfoil': lambda x: (x[:, 10:-30, 140:-20]-2)/2,  # Bad dataset
-    'Cylinder': lambda x: x[:, 8:-8, 16:272]/3,
-    'Plate': lambda x: x[:, 14:142, 8:328]/10,
-    'Square_Cylinder': lambda x: (x[:, 13:-3, 38:294]-2)/2
-}
-
-
-def load(dataset, preprocess=True):
-    x = np.load('data/'+dataset+'.npy', allow_pickle=True)
-    if preprocess:
-        x = prep[dataset](x)
-    return x
-
-# %% Navier Stokes Dataset
-NS_datasets = ['KF_Re40_N200_T500.npy',
-
-               'NS_V1e-3_N5000_T50.npy',
-               'NS_V1e-4_N10000_T30.npy',
-               'NS_V1e-5_N1200_T20.npy',
-
-               'NS_V1e-4_N20_T200_R256.npy'
-               ]
-
-
 def NS_load(data='NS_V1e-5', N=1200, T=20):
     name = f'data/{data}_N{N}_T{T}.npy'
     a = np.load(name)
     return torch.as_tensor(a, dtype=torch.float)
 
-
-def NS_load_old(file_path):
-    file_path = 'data/' + file_path
-    if file_path.endswith('.npy'):
-        data = np.load(file_path).astype(np.float32)
-        return torch.as_tensor(data)
-    try:
-        data = scipy.io.loadmat(file_path)
-        a, u = data['a'], data['u']
-        del data
-    except:
-        data = h5py.File(file_path)
-        a, u = data['a'], data['u']
-        del data
-        a = a[()]
-        a = np.transpose(a, axes=range(len(a.shape) - 1, -1, -1))
-        u = u[()]
-        u = np.transpose(u, axes=range(len(u.shape) - 1, -1, -1))
-
-    a = torch.as_tensor(a, dtype=torch.float).unsqueeze(-1)
-    u = torch.as_tensor(u, dtype=torch.float)
-#    try:
-#        u = torch.cat([a, u], dim=-1)
-#        # gets memory issue (?!):
-#        del a
-#    except:
-#        pass
-    u = u.permute(0, 3, 1, 2)
-    return u
 
 # %% getting the number of parameters of a pytorch model
 def count_params(model):

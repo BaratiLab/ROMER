@@ -23,8 +23,6 @@ from ModelClass import ModelClass
 Device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Device is', Device, '\n')
 
-loaded = False
-
 NS_models = sorted([name for name in os.listdir('Results') if name.startswith('NS')])
 for i, model_name in enumerate(NS_models):
     print(f'model {i}: {model_name}')
@@ -43,7 +41,6 @@ for i, model_name in enumerate(NS_models):
     b = model_name.find(')')
     N = int(model_name[a+1:b])
 
-    if not model_name.endswith('vit'): continue
 
     # We set the random state for reproducability
     train_idx, val_idx = train_test_split(np.arange(N), test_size=1/6,
@@ -60,17 +57,13 @@ for i, model_name in enumerate(NS_models):
     print(f"parameter count: CAE({n1}), transformer({n2}), total({n1+n2})")
 
     try:
-        print(shit)
         RMSEs = np.load(model.result_dir+'/RMSEs.npy')
         RMSEs_t = np.load(model.result_dir+'/RMSEs_t.npy')
         TRUEs = np.load(model.result_dir+'/TRUEs.npy')
         PREDs = np.load(model.result_dir+'/PREDs.npy')
     except:
-        if loaded:
-            del data_array, TRUEs, PREDs, RMSEs, RMSEs_t
         data_array = NS_load(NS_datasets[dataset_idx])[:N, :T]
         data_array /= max(data_array.max(), -data_array.min())
-        loaded = True
 
         model.set_AE_dataset(AE_dataset(data_array, train_idx),
                              AE_dataset(data_array, val_idx))

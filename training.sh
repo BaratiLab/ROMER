@@ -1,4 +1,6 @@
 #!/bin/bash
 
-python AE_Transformer_NS.py -data 1 -ae_epochs 100 -epochs 100
-python AE_Transformer_NS_test.py
+python Train.py -data 1 -ae_epochs 2 -epochs 2
+python Train.py -data 2 -ae_epochs 2 -epochs 2
+python Train.py -data 3 -ae_epochs 2 -epochs 2
+python Test.py
