@@ -9,7 +9,6 @@ from ModelClass import ModelClass
 matplotlib.rcParams['figure.autolayout'] = True
 import argparse
 
-
 parser = argparse.ArgumentParser()
 # Choosing the dataset:
 parser.add_argument('-data', '--dataset_idx', type=int, default=3,

@@ -43,7 +43,6 @@ for i, model_name in enumerate(NS_models):
     b = model_name.find(')')
     N = int(model_name[a+1:b])
 
-
     # We set the random state for reproducability
     train_idx, val_idx = train_test_split(np.arange(N), test_size=1/6,
                                           random_state=0)
