@@ -34,6 +34,7 @@ Train a model with your choice of hyperparameters:
 python Train.py -data data -down down -embed_dim embed_dim -dt dt -num_layers num_layers -num_heads num_heads -batch batch -ae_epoch ae_epochs -epochs epochs
 ```
 where
+
 ```data``` is the dataset number (1, 2 or 3) (default=3)
 
 ```down``` is the number of encoder/decoder blocks in the autoencoder (default=4)
