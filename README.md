@@ -34,15 +34,15 @@ Train a model with your choice of hyperparameters:
 python Train.py -data data -down down -embed_dim embed_dim -dt dt -num_layers num_layers -num_heads num_heads -batch batch -ae_epoch ae_epochs -epochs epochs
 ```
 where
-```data``` is the dataset number (1, 2 or 3) (default=3)
-```down``` is the number of encoder/decoder blocks in the autoencoder (default=4)
-```embed_dim``` is the feature dimension of the embedding tensor (default=128)
-```dt``` is the number of time steps that the transformer learns to propagate the system (default=1)
-```num_layers``` is the number of layers of the transformer (default=6)
-```num_heads``` is the number of heads in the multi-head attention in the transformer (default=8)
-```batch``` is the batch size used for training (default=64)
-```ae_epoch``` is the number of epochs to train the autoencoder (default=100)
-```epoch``` is the number of epochs to train the transformer (default=100)
+```data``` is the dataset number (1, 2 or 3) (default=3) \\
+```down``` is the number of encoder/decoder blocks in the autoencoder (default=4) \\
+```embed_dim``` is the feature dimension of the embedding tensor (default=128) \\
+```dt``` is the number of time steps that the transformer learns to propagate the system (default=1) \\
+```num_layers``` is the number of layers of the transformer (default=6) \\
+```num_heads``` is the number of heads in the multi-head attention in the transformer (default=8) \\
+```batch``` is the batch size used for training (default=64) \\
+```ae_epoch``` is the number of epochs to train the autoencoder (default=100) \\
+```epoch``` is the number of epochs to train the transformer (default=100) \\
 You can find the recommended number of epochs for each dataset in ```training.sh```.
 
 ## Citation
