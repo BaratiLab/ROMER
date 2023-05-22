@@ -14,9 +14,10 @@ $ pip install -r requirements.txt
 # clone the source code of ROMER
 $ git clone https://github.com/BaratiLab/ROMER.git
 $ cd ROMER
+$ mkdir data
 ```
 ## Datasets
-The datasets are available [here](https://doi.org/10.6084/m9.figshare.22806800)
+The datasets are available [here](https://doi.org/10.6084/m9.figshare.22806800). After download, unzip the data in the data folder.
 
 ## Training the model
 Train and test the models from the paper:
