@@ -15,6 +15,7 @@ $ pip install -r requirements.txt
 $ git clone https://github.com/BaratiLab/ROMER.git
 $ cd ROMER
 $ mkdir data
+$ mkdir Results
 ```
 ## Datasets
 The datasets are available [here](https://doi.org/10.6084/m9.figshare.22806800). After download, unzip the data in the data folder.
@@ -55,6 +56,3 @@ where
 ```epoch``` is the number of epochs to train the transformer (default=100)
 
 You can find the recommended number of epochs for each dataset in ```training.sh```.
-
-## Citation
-If you find this code useful, please consider citing our work:
